@@ -1,0 +1,248 @@
+:root {
+  --background: #1B1D29;
+  --foreground: #ededed;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(to right, #243949 0%, #517fa4 100%);
+  font-family: "Nabla", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  font-family: "Nabla";
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+/* ========== PAGE LAYOUT ========== */
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* ========== HEADER ========== */
+header {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5em 1em;
+}
+
+header .brand {
+  font-size: 2rem;
+  transform: rotate(-5deg);
+}
+
+.btn--fancy, input[type="submit"] {
+  font-family: "Nabla";
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: 250ms ease all;
+}
+
+.btn--fancy:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+}
+
+/* ========== MAIN LAYOUT ========== */
+main {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  text-align: center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+/* ========== TOKEN LISTINGS ========== */
+.tokens {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* ========== TOKEN CARD ========== */
+.token {
+  width: 100%;
+  max-width: 350px;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid var(--foreground);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.token:hover {
+  transform: scale(1.05);
+}
+
+.token__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.token__details img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.token__details p {
+  font-size: 1rem;
+  margin: 0.3em 0;
+}
+
+.token__details .name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* ========== LISTING & TRADE POPUPS ========== */
+.list, .trade {
+  width: 90%;
+  max-width: 500px;
+  background-color: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.list h2, .trade h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1em;
+}
+
+.list__description, .trade .disclaimer {
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 1em;
+}
+
+/* ========== POPUP FORMS ========== */
+.list form, .trade form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+}
+
+.list form input, .trade form input {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: none;
+  width: 100%;
+  padding: 0.8em;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.trade form input[type="number"] {
+  width: 100%;
+  max-width: 200px;
+}
+
+button, .btn--fancy {
+  font-size: 1.2rem;
+  padding: 0.6em 1em;
+  border-radius: 6px;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+  
+  .tokens {
+    grid-template-columns: 1fr;
+  }
+
+  .list, .trade {
+    width: 80%;
+    padding: 1.5em;
+  }
+
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn--fancy, input[type="submit"] {
+    font-size: 1.2rem;
+  }
+
+  .list, .trade {
+    width: 90%;
+    padding: 1.2em;
+  }
+
+  .token {
+    max-width: 100%;
+  }
+
+  .list form input, .trade form input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .btn--fancy, input[type="submit"] {
+    font-size: 1rem;
+  }
+
+  .list, .trade {
+    width: 95%;
+    padding: 1em;
+  }
+
+  .token__details p {
+    font-size: 0.9rem;
+  }
+}
