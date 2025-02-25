@@ -40,19 +40,22 @@ function Trade({ toggleTrade, token, provider, factory }) {
   }, [])
 
   return (
-    <div className="trade">
+    <div 
+    className="trade"
+    >
       <h2>Trade</h2>
 
       <div className="token__details">
         <p className="name">{token.name}</p>
-        <p>creator: {token.creator.slice(0, 6) + '...' + token.creator.slice(38, 42)}</p>
-        <img src={token.image} alt="Pepe" width={256} height={256} />
-        <p>marketcap: {ethers.formatUnits(token.raised, 18)} ETH</p>
-        <p>base cost: {ethers.formatUnits(cost, 18)} ETH</p>
+        <p style={{color:"white"}}>creator: {token.creator.slice(0, 6) + '...' + token.creator.slice(38, 42)}</p>
+        <img src={token.image} alt="Pepe" width={200} height={200} />
+        <p style={{color:"white"}}
+        >marketcap: {ethers.formatUnits(token.raised, 18)} ETH</p>
+        <p style={{color:"white"}}>base cost: {ethers.formatUnits(cost, 18)} ETH</p>
       </div>
 
       {token.sold >= limit || token.raised >= target ? (
-        <p className="disclaimer">target reached!</p>
+        <p style={{color:"white"}} className="disclaimer">target reached!</p>
       ) : (
         <form action={buyHandler}>
           <input type="number" name="amount" min={1} max={10000} placeholder="1" />

@@ -11,7 +11,11 @@ module.exports = buildModule("FactoryModule", (m) => {
   const fee = m.getParameter("fee", FEE);
 
   // Define factory
-  const factory = m.contract("Factory", [fee]);
+  // Deploy with a manual gas price
+  // Deploy with explicit gas settings
+  const factory = m.contract("Factory", [fee], {
+    gasPrice: ethers.parseUnits("35", "gwei"), // 35 Gwei
+  });
 
   // Return factory
   return { factory };

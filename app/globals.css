@@ -3,18 +3,33 @@
   --foreground: #ededed;
 }
 
-html, body {
+html,
+body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+.stylish {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #000000, #533967);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+ 
+
+}
+
 
 body {
-  color: var(--foreground);
-  background: linear-gradient(to right, #243949 0%, #517fa4 100%);
+  color: rgba(5, 3, 9, 0.9);
+  background: linear-gradient(135deg, #28032b, #ad80cb, #28032b); /* Smooth purple gradient */
   font-family: "Nabla", Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; /* Ensures the gradient covers the full page */
 }
+
 
 * {
   box-sizing: border-box;
@@ -22,7 +37,9 @@ body {
   margin: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "Nabla";
 }
 
@@ -30,219 +47,261 @@ h2 {
   font-size: 2rem;
 }
 
-/* ========== PAGE LAYOUT ========== */
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
 }
 
-/* ========== HEADER ========== */
+/* HEADER STYLES */
+
 header {
-  width: 100%;
-  max-width: 1200px;
+  grid-column: 2 / 12;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5em 1em;
+
+  padding: 2em 0;
 }
 
 header .brand {
+  font-family: "Nabla";
   font-size: 2rem;
   transform: rotate(-5deg);
 }
 
-.btn--fancy, input[type="submit"] {
+/* BUTTON STYLES */
+
+.btn--fancy,
+input[type="submit"] {
   font-family: "Nabla";
   font-size: 1.5rem;
+  color: linear-gradient(135deg, #000000, #0e041e);
   background: transparent;
   border: none;
+
   cursor: pointer;
+
   transition: 250ms ease all;
 }
 
-.btn--fancy:hover, input[type="submit"]:hover {
-  transform: scale(1.1);
+
+header .btn--fancy {
+  transform: rotate(5deg);
 }
 
-/* ========== MAIN LAYOUT ========== */
+main .create .btn--fancy {
+  font-size: 2rem;
+}
+
+.btn--fancy:hover,
+input[type="submit"]:hover {
+  transform: scale(1.2);
+}
+
+/* MAIN LAYOUT */
+
 main {
-  width: 100%;
-  max-width: 1200px;
+  grid-column: 2 / 12;
+
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(12, 1fr);
+
   text-align: center;
-  gap: 1.5rem;
-  padding: 1rem;
 }
 
-/* ========== TOKEN LISTINGS ========== */
+main .create {
+  grid-column: 1 / 13;
+  place-content: center;
+  min-height: 30svh;
+}
+
+/* DISPLAY TOKEN LISTINGS */
+
+main .listings {
+  grid-column: 1 / 13;
+}
+
+main .listings h1 {
+  font-family: "Arial";
+  font-weight: 800;
+  padding: 1em;
+}
+
 .tokens {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 0));
+  gap: 1em;
+  place-content: center;
   text-align: center;
-  width: 100%;
 }
 
-/* ========== TOKEN CARD ========== */
+.tokens p {
+  grid-column: 1 / -1;
+  font-family: "Arial";
+  font-size: 1.50rem;
+}
+
 .token {
-  width: 100%;
-  max-width: 350px;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  border: 1px solid var(--foreground);
+  background: none;
+  border: 1px solid transparent;
+  color: var(--foreground);
+  padding: 0.5rem;
+
+  font-size: 1.05rem;
+
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+}
+
+.token:nth-child(1) {
+  animation: blink forwards 5s ease infinite;
 }
 
 .token:hover {
-  transform: scale(1.05);
+  border: 1px solid var(--foreground);
+}
+
+@keyframes blink {
+  0% {
+    background: #d4ff00;
+    opacity: 0;
+  }
+
+  5% {
+    background: none;
+    opacity: 1;
+  }
+
+  95% {
+    background: none;
+    opacity: 1;
+  }
+
+  100% {
+    background: yellow;
+    opacity: 0;
+  }
 }
 
 .token__details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.token__details img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
+  font-family: "Arial";
+  font-weight: 400;
+  text-align: center;
 }
 
 .token__details p {
-  font-size: 1rem;
-  margin: 0.3em 0;
+  font-size: 0.95rem;
+  text-transform: lowercase;
+  padding: 0.3em;
+  width: 100%;
 }
 
 .token__details .name {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.40rem;
 }
 
-/* ========== LISTING & TRADE POPUPS ========== */
-.list, .trade {
-  width: 90%;
-  max-width: 500px;
+/* CREATE TOKEN FORM */
+
+.list {
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.9);
+
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 2em;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding-top: 3em;
 }
 
-.list h2, .trade h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1em;
+.list__description {
+  font-family: "Arial";
+  font-size: 1.10rem;
+  font-weight: 400;
+  text-transform: lowercase;
+  padding: 1em 0 0;
 }
 
-.list__description, .trade .disclaimer {
-  font-size: 1.2rem;
-  text-align: center;
-  padding: 1em;
-}
-
-/* ========== POPUP FORMS ========== */
-.list form, .trade form {
+.list form {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  gap: 1em;
-  width: 100%;
+  gap: 2em;
+  padding: 2em;
 }
 
-.list form input, .trade form input {
+.list form input[type="text"] {
   background-color: var(--background);
   color: var(--foreground);
   border: none;
-  width: 100%;
-  padding: 0.8em;
+
+  width: 200px;
+  padding: 1.50em;
   border-radius: 6px;
-  text-align: center;
-  font-size: 1rem;
+}
+
+/* TRADE TOKENS */
+.trade {
+  width: 100vw;
+  height: 100vh;
+  color: whitesmoke;
+  background-color: rgba(41, 27, 48, 0.9);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 3em;
+}
+
+.trade p {
+  font-family: "Arial";
+  font-size: 1.10rem;
+  text-transform: lowercase;
+}
+
+.trade .disclaimer {
+  font-size: 1.50rem;
+  font-weight: bold;
+  padding: 2em;
+}
+
+.trade form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2em;
+  padding: 2em;
 }
 
 .trade form input[type="number"] {
-  width: 100%;
-  max-width: 200px;
-}
+  background-color: var(--background);
+  color: var(--foreground);
+  border: none;
 
-button, .btn--fancy {
-  font-size: 1.2rem;
-  padding: 0.6em 1em;
+  width: 200px;
+  padding: 1.50em;
   border-radius: 6px;
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-@media (max-width: 1024px) {
-  main {
-    grid-template-columns: 1fr;
-  }
-  
-  .tokens {
-    grid-template-columns: 1fr;
-  }
 
-  .list, .trade {
-    width: 80%;
-    padding: 1.5em;
-  }
-
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-@media (max-width: 768px) {
-  h2 {
-    font-size: 1.5rem;
-  }
-
-  .btn--fancy, input[type="submit"] {
-    font-size: 1.2rem;
-  }
-
-  .list, .trade {
-    width: 90%;
-    padding: 1.2em;
-  }
-
-  .token {
-    max-width: 100%;
-  }
-
-  .list form input, .trade form input {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  .btn--fancy, input[type="submit"] {
-    font-size: 1rem;
-  }
-
-  .list, .trade {
-    width: 95%;
-    padding: 1em;
-  }
-
-  .token__details p {
-    font-size: 0.9rem;
-  }
+.t-wala {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(135deg, #000000, #0e041e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+ 
 }

@@ -1,21 +1,24 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config(); // Load env variables
+require("dotenv").config();
 
 module.exports = {
-  networks: {
-    sepolia: {
-      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-      accounts: [`0x${process.env.PRIVATE_KEY}`],
-    },
-  },
   solidity: {
-    version: "0.8.27", // ✅ Match Solidity version in your contracts
+    version: "0.8.27",
     settings: {
+      evmVersion: "paris",
       optimizer: {
         enabled: true,
         runs: 200,
       },
     },
   },
+  networks: {
+    coreTestnet: {
+      url: process.env.CORE_TESTNET_RPC_URL, // Core testnet RPC URL
+      accounts: [process.env.PRIVATE_KEY], // Wallet private key
+      gasPrice: 35_000_000_000, // 35 Gwei (matches Core Testnet)
+      maxPriorityFeePerGas: 1_000_000_000, // Set to 1 Gwei
+      maxFeePerGas: 35_000_000_000, // 35 Gwei
+    },
+  },
 };
-

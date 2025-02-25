@@ -1,5 +1,4 @@
 "use client";
-require("dotenv").config();
 
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -25,7 +24,6 @@ export default function Home() {
   const [showCreate, setShowCreate] = useState(false);
   const [showTrade, setShowTrade] = useState(false);
 
-
   function toggleCreate() {
     showCreate ? setShowCreate(false) : setShowCreate(true);
   }
@@ -35,35 +33,22 @@ export default function Home() {
     showTrade ? setShowTrade(false) : setShowTrade(true);
   }
 
+  const FACTORY_ADDRESS = "0xC95cbB5Bc38ab5ac1287a0999DbDB8e2454a1cE7";
+
   async function loadBlockchainData() {
     // Use MetaMask for our connection
-    const provider = new ethers.JsonRpcProvider(
-      `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
-    );
-
-    console.log(provider);
-
+    const provider = new ethers.BrowserProvider(window.ethereum);
     setProvider(provider);
 
     // Get the current network
     const network = await provider.getNetwork();
-    console.log("Detected Chain ID:", network.chainId);
 
     // Create reference to Factory contract
-    const factory = new ethers.Contract(
-      config[network.chainId].factory.address,
-      Factory,
-      provider
-    );
-    //console.log(factory);
-    console.log("Alchemy API Key:",ALCHEMY_API_KEY); // Check if it's loaded
-
+    const factory = new ethers.Contract(FACTORY_ADDRESS, Factory, provider);
     setFactory(factory);
 
     // Fetch the fee
     const fee = await factory.fee();
-    // console.log("fee ", fee);
-
     setFee(fee);
 
     // Prepare to fetch token details
@@ -113,7 +98,7 @@ export default function Home() {
             className="btn--fancy"
           >
             {!factory
-              ? "[ contract not deployed ]"
+              ? "[ Loading Contract... ]"
               : !account
               ? "[ please connect ]"
               : "[ start a new token ]"}
@@ -121,13 +106,13 @@ export default function Home() {
         </div>
 
         <div className="listings">
-          <h1>new listings</h1>
+          <h1 className="stylish">New listings</h1>
 
           <div className="tokens">
             {!account ? (
-              <p>please connect wallet</p>
+              <p className="stylish">Please connect wallet</p>
             ) : tokens.length === 0 ? (
-              <p>No tokens listed</p>
+              <p className="stylish">No tokens listed</p>
             ) : (
               tokens.map((token, index) => (
                 <Token toggleTrade={toggleTrade} token={token} key={index} />

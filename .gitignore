@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/artifacts
+/cache
+/ignition
 /.pnp
 .pnp.*
 .yarn/*
