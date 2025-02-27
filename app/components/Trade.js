@@ -7,22 +7,32 @@ function Trade({ toggleTrade, token, provider, factory }) {
   const [cost, setCost] = useState(0)
 
   async function buyHandler(form) {
-    const amount = form.get("amount")
-
-    const cost = await factory.getCost(token.sold)
-    const totalCost = cost * BigInt(amount)
-
-    const signer = await provider.getSigner()
-
-    const transaction = await factory.connect(signer).buy(
-      token.token,
-      ethers.parseUnits(amount, 18),
-      { value: totalCost }
-    )
-    await transaction.wait()
-
-    toggleTrade()
-  }
+    try {
+      const amount = form.get("amount");
+  
+      const cost = await factory.getCost(token.sold);
+      const totalCost = cost * BigInt(amount);
+  
+      const signer = await provider.getSigner();
+  
+      const transaction = await factory.connect(signer).buy(
+        token.token,
+        ethers.parseUnits(amount, 18),
+        { value: totalCost }
+      );
+  
+      await transaction.wait();
+      alert("Transaction successful!");
+      toggleTrade();
+    } catch (error) {
+      if (error.code === "ACTION_REJECTED") {
+        alert("Transaction rejected by the user.");
+      } else {
+        alert("An error occurred while processing the transaction.");
+        console.error("Transaction error:", error);
+      }
+    }
+  }  
 
   async function getSaleDetails() {
     const target = await factory.TARGET()
