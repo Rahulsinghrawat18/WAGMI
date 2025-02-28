@@ -3,13 +3,18 @@ import { ethers } from "ethers";
 
 function Header({ account, setAccount }) {
   async function connectHandler() {
+    if (typeof window === "undefined" || !window.ethereum) {
+      alert("MetaMask is not installed! Please install it to connect.");
+      return;
+    }
+
     try {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
 
       if (accounts.length > 0) {
-        const account = ethers.getAddress(accounts[0]);
+        const account = ethers.getAddress(accounts[0]); // Normalize address
         setAccount(account);
       }
     } catch (error) {
@@ -23,21 +28,28 @@ function Header({ account, setAccount }) {
   }
 
   function disconnectHandler() {
-    setAccount(null); // Clear account state (simulate logout)
+    setAccount(null);
     alert("You have been logged out. Please reconnect if needed.");
   }
 
   useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length === 0) {
-          setAccount(null); // Auto logout if MetaMask disconnects
-          alert("You have disconnected your wallet.");
-        } else {
-          setAccount(ethers.getAddress(accounts[0]));
-        }
-      });
+    if (!window.ethereum) return;
+
+    function handleAccountsChanged(accounts) {
+      if (accounts.length === 0) {
+        setAccount(null);
+        alert("You have disconnected your wallet.");
+      } else {
+        setAccount(ethers.getAddress(accounts[0]));
+      }
     }
+
+    window.ethereum.on("accountsChanged", handleAccountsChanged);
+    
+    // Cleanup listener when component unmounts
+    return () => {
+      window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+    };
   }, []);
 
   return (
@@ -48,8 +60,8 @@ function Header({ account, setAccount }) {
           <button onClick={disconnectHandler} className="btn--fancy">
             [ logout ]
           </button>
-          <button onClick={connectHandler} className="btn--fancy">
-            [ {account.slice(0, 6) + "..." + account.slice(38, 42)} ]
+          <button className="btn--fancy">
+            [ {account.slice(0, 6) + "..." + account.slice(-4)} ]
           </button>
         </div>
       ) : (
