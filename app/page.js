@@ -36,55 +36,66 @@ export default function Home() {
   const FACTORY_ADDRESS = "0xC95cbB5Bc38ab5ac1287a0999DbDB8e2454a1cE7";
 
   async function loadBlockchainData() {
-    // Use MetaMask for our connection
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    setProvider(provider);
-
-    // Get the current network
-    const network = await provider.getNetwork();
-
-    // Create reference to Factory contract
-    const factory = new ethers.Contract(FACTORY_ADDRESS, Factory, provider);
-    setFactory(factory);
-
-    // Fetch the fee
-    const fee = await factory.fee();
-    setFee(fee);
-
-    // Prepare to fetch token details
-    const totalTokens = await factory.totalTokens();
-    const tokens = [];
-
-    // We'll get the first 6 tokens listed
-    for (let i = 0; i < totalTokens; i++) {
-      if (i == 6) {
-        break;
-      }
-
-      const tokenSale = await factory.getTokenSale(i);
-
-      // We create our own object to store extra fields
-      // like images
-      const token = {
-        token: tokenSale.token,
-        name: tokenSale.name,
-        creator: tokenSale.creator,
-        sold: tokenSale.sold,
-        raised: tokenSale.raised,
-        isOpen: tokenSale.isOpen,
-        image: images[i],
-      };
-
-      tokens.push(token);
+    if (typeof window.ethereum === "undefined") {
+      console.log("Ethereum provider not found. Install MetaMask.");
+      return;
     }
 
-    // We reverse the array so we can get the most
-    // recent token listed to display first
-    setTokens(tokens.reverse());
+    try {
+      // Use MetaMask for our connection
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      setProvider(provider);
+
+      // Get the current network
+      const network = await provider.getNetwork();
+
+      // Create reference to Factory contract
+      const factory = new ethers.Contract(FACTORY_ADDRESS, Factory, provider);
+      setFactory(factory);
+
+      // Fetch the fee
+      const fee = await factory.fee();
+      setFee(fee);
+
+      // Prepare to fetch token details
+      const totalTokens = await factory.totalTokens();
+      const tokens = [];
+
+      // We'll get the first 6 tokens listed
+      for (let i = 0; i < totalTokens; i++) {
+        if (i === 6) {
+          break;
+        }
+
+        const tokenSale = await factory.getTokenSale(i);
+
+        // We create our own object to store extra fields
+        // like images
+        const token = {
+          token: tokenSale.token,
+          name: tokenSale.name,
+          creator: tokenSale.creator,
+          sold: tokenSale.sold,
+          raised: tokenSale.raised,
+          isOpen: tokenSale.isOpen,
+          image: images[i],
+        };
+
+        tokens.push(token);
+      }
+
+      // We reverse the array so we can get the most
+      // recent token listed to display first
+      setTokens(tokens.reverse());
+    } catch (error) {
+      console.error("Error loading blockchain data:", error);
+    }
   }
 
   useEffect(() => {
-    loadBlockchainData();
+    setTimeout(() => {
+      loadBlockchainData();
+    }, 1000);
   }, [showCreate, showTrade]);
 
   return (
